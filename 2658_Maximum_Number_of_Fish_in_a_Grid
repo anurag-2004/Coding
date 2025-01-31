@@ -1,0 +1,30 @@
+class Solution {
+public:
+    int dfs(int r, int c, vector<vector<int>>& grid,vector<vector<bool>>& vis){
+        if(r<0 || r>= grid.size() || c<0 || c>= grid[0].size() || grid[r][c]==0 || vis[r][c]) return 0;
+        vis[r][c]=true;
+        int fishcount=grid[r][c];
+        int row[]={-1,0,1,0};
+        int col[]={0,1,0,-1};
+        for(int i=0;i<4;i++){
+            int newr= r+row[i];
+            int newc= c+col[i];
+            fishcount+=dfs(newr,newc,grid,vis);
+        }
+        return fishcount;
+    }
+    int findMaxFish(vector<vector<int>>& grid) {
+        int n=grid.size();
+        int m= grid[0].size();
+        int maxfish=0;
+        vector<vector<bool>>vis(n,vector<bool>(m,false));
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(grid[i][j]>0 && !vis[i][j]){
+                    maxfish=max(maxfish,dfs(i,j,grid,vis));
+                }
+            }
+        }
+        return maxfish;
+    }
+};
